@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Gigantazzo</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #121212; color: #fff; margin: 0; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; background: #1e1e1e; padding: 20px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        h1, h2 { color: #ff9800; border-bottom: 2px solid #333; padding-bottom: 10px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; color: #ccc; }
+        input, textarea { width: 100%; padding: 10px; background: #2a2a2a; border: 1px solid #444; color: #fff; border-radius: 4px; box-sizing: border-box; }
+        button { background: #ff9800; color: #000; border: none; padding: 12px 20px; font-weight: bold; cursor: pointer; border-radius: 4px; font-size: 16px; margin-top: 10px; }
+        button:hover { background: #e68900; }
+        .item-card { background: #252525; padding: 15px; margin-bottom: 15px; border-radius: 6px; border-left: 4px solid #ff9800; }
+        .prices-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .login-box { background: #252525; padding: 20px; border-radius: 6px; margin-bottom: 20px; }
+        #admin-panel { display: none; }
+        .mensaje { padding: 10px; margin-bottom: 15px; border-radius: 4px; display: none; }
+        .exito { background: #2e7d32; color: #fff; }
+        .error { background: #c62828; color: #fff; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Panel de Administración Gigantazzo</h1>
+        
+        <div id="alerta" class="mensaje"></div>
+
+        <!-- PASO 1: AUTENTICACIÓN CON TOKEN DE GITHUB -->
+        <div id="login-box" class="login-box">
+            <h2>Acceso Administrador</h2>
+            <p>Ingresá tu Token personal de GitHub para poder guardar los cambios directamente:</p>
+            <div class="form-group">
+                <label>GitHub Personal Access Token (PAT):</label>
+                <input type="password" id="github-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+            </div>
+            <button onclick="conectarGitHub()">Cargar Menú</button>
+            <p style="font-size: 12px; color: #888; margin-top: 10px;">* El token se guarda solo en tu navegador por seguridad.</p>
+        </div>
+
+        <!-- PASO 2: FORMULARIO DE EDICIÓN -->
+        <div id="admin-panel">
+            <div id="editor-contenido"></div>
+            <button onclick="guardarCambios()" style="background: #4caf50; color: #fff; width: 100%; font-size: 18px; padding: 15px;">Guardar Cambios en la Web</button>
+        </div>
+    </div>
+
+    <script>
+        let menuData = {};
+        let shaFile = "";
+        let tokenGlobal = "";
+        const repoOwner = "todopaginas"; // Tu usuario de GitHub
+        const repoName = "gigantazzo";   // Tu repositorio
+
+        async function conectarGitHub() {
+            const token = document.getElementById('github-token').value.trim();
+            if (!token) {
+                mostrarAlerta("Por favor ingrese un token válido.", "error");
+                return;
+            }
+            tokenGlobal = token;
+
+            try {
+                const response = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/menu.json`, {
+                    headers: { 'Authorization': `token ${token}` }
+                });
+
+                if (!response.ok) throw new Error("No se pudo conectar o el Token es incorrecto.");
+                
+                const data = await response.json();
+                shaFile = data.sha; // Necesario para actualizar el archivo en GitHub
+                
+                // Decodificar el contenido Base64 de GitHub
+                const jsonString = decodeURIComponent(escape(atob(data.content)));
+                menuData = JSON.parse(jsonString);
+
+                renderizarFormulario();
+                document.getElementById('login-box').style.display = 'none';
+                document.getElementById('admin-panel').style.display = 'block';
+                mostrarAlerta("¡Menú cargado con éxito!", "exito");
+            } catch (error) {
+                mostrarAlerta("Error: Verificá tu Token o los permisos del repositorio.", "error");
+                console.error(error);
+            }
+        }
+
+        function renderizarFormulario() {
+            const contenedor = document.getElementById('editor-contenido');
+            let html = `<h2>Sección Oferta Especial</h2>`;
+            
+            html += `
+                <div class="item-card">
+                    <div class="form-group"><label>Título Oferta:</label><input type="text" id="offer-title" value="${menuData.offer.title}"></div>
+                    <div class="form-group"><label>Subtítulo Oferta:</label><input type="text" id="offer-subtitle" value="${menuData.offer.subtitle}"></div>
+                    <div class="form-group"><label>Precio Oferta:</label><input type="number" id="offer-price" value="${menuData.offer.price}"></div>
+                </div>
+                <h2>Platos y Categorías del Menú</h2>
+            `;
+
+            menuData.menu.forEach((cat, catIndex) => {
+                html += `<h3>${cat.categoryName}</h3>`;
+                cat.items.forEach((item, itemIndex) => {
+                    html += `
+                        <div class="item-card">
+                            <div class="form-group"><label>Nombre del Plato:</label><input type="text" id="name-${catIndex}-${itemIndex}" value="${item.name}"></div>
+                            <div class="form-group"><label>Descripción:</label><textarea id="desc-${catIndex}-${itemIndex}">${item.description}</textarea></div>
+                            <div class="form-group"><label>Link de Imagen:</label><input type="text" id="img-${catIndex}-${itemIndex}" value="${item.image}"></div>
+                            <label>Precios:</label>
+                            <div class="prices-grid">
+                    `;
+                    for (const [tipoPrecio, valor] of Object.entries(item.prices)) {
+                        html += `<div><label style="font-size:12px">${tipoPrecio}:</label><input type="number" id="price-${catIndex}-${itemIndex}-${tipoPrecio}" value="${valor}"></div>`;
+                    }
+                    html += `</div></div>`;
+                });
+            });
+
+            contenedor.innerHTML = html;
+        }
+
+        async function guardarCambios() {
+            // Actualizar objeto con los valores de los inputs
+            menuData.offer.title = document.getElementById('offer-title').value;
+            menuData.offer.subtitle = document.getElementById('offer-subtitle').value;
+            menuData.offer.price = parseFloat(document.getElementById('offer-price').value);
+
+            menuData.menu.forEach((cat, catIndex) => {
+                cat.items.forEach((item, itemIndex) => {
+                    item.name = document.getElementById(`name-${catIndex}-${itemIndex}`).value;
+                    item.description = document.getElementById(`desc-${catIndex}-${itemIndex}`).value;
+                    item.image = document.getElementById(`img-${catIndex}-${itemIndex}`).value;
+                    
+                    for (const tipoPrecio of Object.keys(item.prices)) {
+                        item.prices[tipoPrecio] = parseFloat(document.getElementById(`price-${catIndex}-${itemIndex}-${tipoPrecio}`).value);
+                    }
+                });
+            });
+
+            // Codificar a Base64 para enviar a la API de GitHub
+            const nuevoJsonString = JSON.stringify(menuData, null, 2);
+            const contentBase64 = btoa(unescape(encodeURIComponent(nuevoJsonString)));
+
+            try {
+                const response = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/menu.json`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${tokenGlobal}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: "Actualización automática desde Panel Administrador",
+                        content: contentBase64,
+                        sha: shaFile
+                    })
+                });
+
+                if (!response.ok) throw new Error("No se pudo guardar en GitHub.");
+
+                const resData = await response.json();
+                shaFile = resData.content.sha; // Actualizar el SHA para futuros guardados
+                mostrarAlerta("¡Cambios guardados y publicados con éxito en la web!", "exito");
+            } catch (error) {
+                mostrarAlerta("Error al guardar los cambios.", "error");
+                console.error(error);
+            }
+        }
+
+        function mostrarAlerta(texto, tipo) {
+            const alerta = document.getElementById('alerta');
+            alerta.innerText = texto;
+            alerta.className = `mensaje ${tipo}`;
+            alerta.style.display = 'block';
+            setTimeout(() => { alerta.style.display = 'none'; }, 4000);
+        }
+    </script>
+</body>
+</html>
