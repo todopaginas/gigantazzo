@@ -23,12 +23,11 @@
 <body>
     <div class="container">
         <h1>Panel de Administración Gigantazzo</h1>
-        
         <div id="alerta" class="mensaje"></div>
 
         <div id="admin-panel">
-            <div id="editor-contenido"></div>
-            <button onclick="guardarCambios()" style="background: #4caf50; color: #fff; width: 100%; font-size: 18px; padding: 15px;">Guardar Cambios en la Web</button>
+            <div id="editor-contenido"><p>Cargando menú...</p></div>
+            <button onclick="guardarCambios()" style="background: #4caf50; color: #fff; width: 100%; font-size: 18px; padding: 15px; margin-top: 20px;">Guardar Cambios en la Web</button>
         </div>
     </div>
 
@@ -45,7 +44,7 @@
                     headers: { 'Authorization': `token ${tokenGlobal}` }
                 });
 
-                if (!response.ok) throw new Error("No se pudo conectar a GitHub.");
+                if (!response.ok) throw new Error("No se pudo conectar a GitHub. Verificá los permisos del token.");
                 
                 const data = await response.json();
                 shaFile = data.sha;
@@ -54,7 +53,6 @@
                 menuData = JSON.parse(jsonString);
 
                 renderizarFormulario();
-                document.getElementById('admin-panel').style.display = 'block';
             } catch (error) {
                 mostrarAlerta("Error al conectar con GitHub.", "error");
                 console.error(error);
@@ -148,7 +146,6 @@
             setTimeout(() => { alerta.style.display = 'none'; }, 4000);
         }
 
-        // Cargar el menú solo al entrar por tener el token integrado
         cargarMenuAutomatico();
     </script>
 </body>
