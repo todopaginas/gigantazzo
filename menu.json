@@ -1,0 +1,147 @@
+{
+  "offer": {
+    "title": "2 DOBLES IGUALES",
+    "subtitle": "CON FRITAS",
+    "price": 25000,
+    "options": [
+      {
+        "name": "LA GLORIOSA",
+        "description": "Queso gratinado, panceta, cebolla caramelizada, cheddar, barbacoa y salsa de la casa."
+      },
+      {
+        "name": "LA CHEDDAR",
+        "description": "Cheddar, panceta, cebolla caramelizada y barbacoa."
+      },
+      {
+        "name": "LA COMPLETA",
+        "description": "Jamón, queso, huevo, lechuga, tomate y salsa de la casa."
+      },
+      {
+        "name": "LA TANA",
+        "description": "Queso tybo, calabresa, salsa de la casa y cebolla caramelizada."
+      }
+    ]
+  },
+  "menu": [
+    {
+      "categoryId": "hamburguesas",
+      "categoryName": "Hamburguesas",
+      "items": [
+        {
+          "name": "1. COMPLETA",
+          "description": "Jamón, queso, huevo, lechuga, tomate y salsa de la casa.",
+          "prices": {"Simple": 12000, "Doble": 14000, "Triple": 16000},
+          "image": "https://i.ibb.co/3mg3KnYq/Whats-App-Image-2026-08-28-at-7-56-25-PM-2.jpg"
+        },
+        {
+          "name": "2. CHEDDAR",
+          "description": "Cheddar, panceta, cebolla caramelizada y barbacoa.",
+          "prices": {"Simple": 12000, "Doble": 14000, "Triple": 16000},
+          "image": "https://i.ibb.co/4g3pmZYG/Whats-App-Image-2026-08-28-at-7-56-24-PM-2.jpg"
+        },
+        {
+          "name": "3. LA GLORIOSA",
+          "description": "Queso gratinado en pan, cebolla caramelizada, panceta, cheddar, barbacoa y salsa de la casa.",
+          "prices": {"Simple": 12000, "Doble": 14000, "Triple": 16000},
+          "image": "https://i.ibb.co/mF5RF7JS/Whats-App-Image-2026-08-28-at-7-56-24-PM.jpg"
+        },
+        {
+          "name": "4. LA ANILLADA",
+          "description": "Aro de cebolla, queso tybo, panceta y salsa de la casa.",
+          "prices": {"Simple": 12000, "Doble": 14000, "Triple": 16000},
+          "image": "https://i.ibb.co/JwN2zBG2/Whats-App-Image-2026-08-28-at-7-56-23-PM-1.jpg"
+        },
+        {
+          "name": "5. LA BASTONERA",
+          "description": "Panceta, cheddar, bastones de mozzarella y salsa de la casa.",
+          "prices": {"Simple": 12000, "Doble": 14000, "Triple": 16000},
+          "image": "https://i.ibb.co/RTtdbncB/Whats-App-Image-2026-08-28-at-7-56-25-PM.jpg"
+        },
+        {
+          "name": "6. LA TANA",
+          "description": "Queso tybo, calabresa, salsa de la casa y cebolla caramelizada.",
+          "prices": {"Simple": 12000, "Doble": 14000, "Triple": 16000},
+          "image": "https://i.postimg.cc/26LTbQvn/Whats-App-Image-2026-08-28-at-7-56-24-PM-(1).jpg"
+        },
+        {
+          "name": "7. LA REBELDE",
+          "description": "Pan de sanguchito de miga, medallón de carne, panceta, cebolla caramelizada, huevo, cheddar y barbacoa.",
+          "prices": {"Simple": 13000, "Doble": 15000, "Triple": 17000},
+          "image": "https://i.postimg.cc/7YkXhTZF/Whats-App-Image-2026-08-28-at-7-56-25-PM-(1).jpg"
+        },
+        {
+          "name": "8. DON ROQUE",
+          "description": "Medallón de carne, roquefort, cebolla caramelizada, panceta y rúcula.",
+          "prices": {"Simple": 12000, "Doble": 14000, "Triple": 16000},
+          "image": "https://i.ibb.co/SwDPfgSC/Whats-App-Image-2026-08-28-at-7-56-23-PM.jpg"
+        }
+      ]
+    },
+    {
+      "categoryId": "acompanamientos",
+      "categoryName": "Acompañamientos",
+      "items": [
+        {
+          "name": "Papas Fritas",
+          "description": "Porción clásica de papas fritas crujientes.",
+          "prices": {"Precio": 7000},
+          "image": "https://i.ibb.co/35LKzv1f/Gemini-Generated-Image-4litzl4litzl4lit.jpg"
+        },
+        {
+          "name": "Papas con Cheddar y Panceta",
+          "description": "Nuestras papas fritas bañadas en salsa cheddar y crocante de panceta.",
+          "prices": {"Precio": 10000},
+          "image": "https://i.ibb.co/4ZCRd5tm/Gemini-Generated-Image-b3zigob3zigob3zi.jpg"
+        },
+        {
+          "name": "Pileta de Cheddar",
+          "description": "Extra de salsa cheddar caliente para acompañar.",
+          "prices": {"Precio": 3000},
+          "image": "https://i.ibb.co/XGtTVQ9/Gemini-Generated-Image-7jx7177jx7177jx7.jpg"
+        },
+        {
+          "name": "Nuggets - 6 Unidades",
+          "description": "Crujientes bocaditos de pollo rebozado.",
+          "prices": {"Precio": 7000},
+          "image": "https://i.ibb.co/PZZjr9Vb/Gemini-Generated-Image-807evs807evs807e.jpg"
+        },
+        {
+          "name": "Nuggets - 12 Unidades",
+          "description": "Porción doble de deliciosos nuggets de pollo.",
+          "prices": {"Precio": 12000},
+          "image": "https://i.ibb.co/Hffs32ms/Gemini-Generated-Image-jecljmjecljmjecl5.png"
+        }
+      ]
+    },
+    {
+      "categoryId": "postres",
+      "categoryName": "Postres",
+      "items": [
+        {
+          "name": "Chocotorta",
+          "description": "El clásico postre argentino de chocolinas y dulce de leche.",
+          "prices": {"Precio": 4000},
+          "image": "https://i.ibb.co/k2PjPZPT/Gemini-Generated-Image-no1eaono1eaono1e.jpg"
+        },
+        {
+          "name": "Oreo",
+          "description": "Postre artesanal sabor galleta Oreo.",
+          "prices": {"Precio": 4000},
+          "image": "https://i.ibb.co/tTQBfP6Z/Gemini-Generated-Image-ezrbyoezrbyoezrb.jpg"
+        }
+      ]
+    },
+    {
+      "categoryId": "bebidas",
+      "categoryName": "Bebidas",
+      "items": [
+        {
+          "name": "Latas",
+          "description": "Coca-Cola, Sprite, Fanta y 7up",
+          "prices": {"Precio": 2500},
+          "image": "https://i.ibb.co/FLQhMKzf/Gemini-Generated-Image-ghgz6sghgz6sghgz.jpg"
+        }
+      ]
+    }
+  ]
+}
